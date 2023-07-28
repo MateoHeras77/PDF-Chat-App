@@ -7,6 +7,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.callbacks import get_openai_callback
 import os
@@ -25,7 +26,8 @@ with st.sidebar:
     add_vertical_space(5)
     st.write('Made with ❤️ by [Prompt Engineer](https://youtube.com/@engineerprompt)')
  
-load_dotenv()
+load_dotenv() #Cargar las variables de entorno
+
  
 def main():
     st.header("Chat with PDF 💬")
@@ -49,6 +51,7 @@ def main():
             )
         chunks = text_splitter.split_text(text=text)
  
+
         # # embeddings
         store_name = pdf.name[:-4]
         st.write(f'{store_name}')
@@ -57,7 +60,7 @@ def main():
         if os.path.exists(f"{store_name}.pkl"):
             with open(f"{store_name}.pkl", "rb") as f:
                 VectorStore = pickle.load(f)
-            # st.write('Embeddings Loaded from the Disk')s
+                st.write('Embeddings Loaded from the Disks')
         else:
             embeddings = OpenAIEmbeddings()
             VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
@@ -74,7 +77,7 @@ def main():
         if query:
             docs = VectorStore.similarity_search(query=query, k=3)
  
-            llm = OpenAI()
+            llm = ChatOpenAI(model_name='gpt-3.5-turbo')
             chain = load_qa_chain(llm=llm, chain_type="stuff")
             with get_openai_callback() as cb:
                 response = chain.run(input_documents=docs, question=query)
