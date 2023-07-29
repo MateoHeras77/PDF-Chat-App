@@ -51,7 +51,7 @@ def main():
 
     # Cargar el historial desde el archivo JSON si el PDF es el mismo
     if store_name:
-        historial_filename = f"{store_name}_historial.json"
+        historial_filename = f"./HISTORIAL/{store_name}_historial.json"
         if os.path.exists(historial_filename):
             with open(historial_filename, "r") as f:
                 st.session_state.historial = json.load(f)
@@ -112,7 +112,7 @@ def main():
 
             # Guardar el historial en el archivo JSON
             if store_name:
-                historial_filename = f"{store_name}_historial.json"
+                historial_filename = f"./HISTORIAL/{store_name}_historial.json"
                 with open(historial_filename, "w") as f:
                     json.dump(st.session_state.historial, f)
 
