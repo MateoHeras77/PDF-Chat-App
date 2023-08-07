@@ -15,17 +15,19 @@ import json
  
 # Sidebar contents
 with st.sidebar:
-    st.title('🤗💬 LLM Chat App')
+    st.title('💬 PDFBot Plus 📚')
     st.markdown('''
-    ## About
-    This app is an LLM-powered chatbot built using:
+    Esta aplicación es un chatbot impulsado por LLM construido usando:
     - [Streamlit](https://streamlit.io/)
     - [LangChain](https://python.langchain.com/)
-    - [OpenAI](https://platform.openai.com/docs/models) LLM model
+    - [OpenAI](https://platform.openai.com/docs/models)
  
     ''')
     add_vertical_space(5)
-    st.write('Made with ❤️ by [Prompt Engineer](https://youtube.com/@engineerprompt)')
+    st.write('Desarrollado por [Mateo Heras](https://mateoheras77.github.io/WEB/)')
+    st.write('Correo: wmateohv@hotmail.com')
+    st.write('LinkedIn: [Mateo Heras](https://www.linkedin.com/in/mateoheras/)')
+
  
 load_dotenv() #Cargar las variables de entorno
 
@@ -37,11 +39,17 @@ def main():
     if 'historial' not in st.session_state:
         st.session_state.historial = []
 
-    st.header("Chat with PDF 💬")
- 
+    st.header("💬 PDFBot Plus: Tu Asistente para PDFs 📚")
+    st.write("¡Olvida la búsqueda tediosa en documentos!")
+    st.write(" Con PDFBot Plus, \
+            interactuar con archivos PDF es pan comido. 🚀🔍 Nuestro chat avanzado con IA, \
+            respaldado por la potencia de OpenAI, revoluciona cómo obtienes información. \
+            Solo pregúntale y PDFBot extraerá datos al instante de los PDFs, ¡como magia! ✨📄")
+    st.write("Disfruta de conversaciones naturales y recupera conocimiento al vuelo, todo con una interfaz intuitiva.\
+              ¡Simplifica tu vida digital con PDFBot Plus! 💡📑")
  
     # upload a PDF file
-    pdf = st.file_uploader("Upload your PDF", type='pdf')
+    pdf = st.file_uploader("📤 ¡Sube tu PDF aquí! 📎", type='pdf')
 
     # Obtener el nombre del archivo sin la extensión para usarlo como nombre del archivo JSON
     if pdf is not None:
@@ -81,7 +89,7 @@ def main():
         if os.path.exists(f"./PKL/{store_name}.pkl"):
             with open(f"./PKL/{store_name}.pkl", "rb") as f:
                 VectorStore = pickle.load(f)
-                st.write('Embeddings Loaded from the Disks')
+                st.write('(Embeddings cargados del historial)')
         else:
             embeddings = OpenAIEmbeddings()
             VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
@@ -89,7 +97,7 @@ def main():
                 pickle.dump(VectorStore, f)        
 
         # Accept user questions/query
-        query = st.text_input("Ask questions about your PDF file:")
+        query = st.text_input("Preguntale a tu PDF:")
         
         # st.write(query)
  
@@ -119,7 +127,8 @@ def main():
          # Mostrar el historial usando st.session_state.historial
         if st.session_state.historial:
             st.write("---")
-            st.write("Historial de consultas y respuestas:")
+            st.write("💬 ¡Echa un vistazo al Historial! 📜")
+            st.write("Aquí te presentamos el recorrido de consultas y respuestas: 🔄")
             st.write("---")
             for item in st.session_state.historial:
                 st.write("Consulta:", item["consulta"])
